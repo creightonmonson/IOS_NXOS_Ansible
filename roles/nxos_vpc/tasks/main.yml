@@ -1,0 +1,53 @@
+---
+- name: Enable Features - VPC and LACP
+  loop:
+    - vpc
+    - lacp
+  cisco.nxos.nxos_feature:
+    feature: "{{ item }}"
+    state: enabled
+
+- name: Configure VPC
+  cisco.nxos.nxos_vpc:
+    domain: "{{ vpc.domain }}"
+    pkl_src: "{{ vpc_pkl_src }}"
+    pkl_dest: "{{ vpc_pkl_dest }}"
+    pkl_vrf: "{{ vpc.pkl_vrf }}"
+    peer_gw: true
+    auto_recovery: true
+  tags: vpc
+
+- name: Create Port Channel for VPC
+  cisco.nxos.nxos_lag_interfaces:
+    config: 
+      - name: "port-channel{{ vpc.port_channel.id }}"
+        members: 
+          - member: "{{ vpc.port_channel.members.0 }}"
+            mode: active
+          - member: "{{ vpc.port_channel.members.1 }}"
+            mode: active 
+  tags: vpc 
+
+- name: Make VPC Port Channel Layer 2
+  cisco.nxos.nxos_interfaces:
+    config: 
+      - name: "port-channel{{ vpc.port_channel.id }}"
+        description: "VPC PortChannel"
+        enabled: true 
+        mode: layer2 
+  tags: vpc
+
+- name: Configure VPC Port Channel as Trunk
+  cisco.nxos.nxos_l2_interfaces:
+    config:
+      - name: "port-channel{{ vpc.port_channel.id }}"
+        trunk: 
+          native-vlan: 1
+#          allowed-vlans: 100,101,102,103
+  tags: vpc
+
+- name: Enable VPC Peer Link on port_channel
+  cisco.nxos.nxos_vpc_interface:
+    portchannel: "{{ vpc.port_channel.id }}"
+    peer_link: true
+  tags: vpc
