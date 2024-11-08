@@ -1,0 +1,12 @@
+---
+ospf:
+  process_id: 1
+  networks:
+    - interface: Ethernet2
+      area: 0
+    - interface: Ethernet3
+      area: 0
+    - interface: Ethernet4
+      area: 0
+    - interface: loopback0
+      area: 0
