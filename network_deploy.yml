@@ -1,0 +1,32 @@
+---
+- name: Configure Netowrk CORE
+  hosts: core 
+  gather_facts: false
+  connection: network_cli
+
+  roles:
+    - ios_l3_interfaces
+    - ios_ospf
+  
+- name: Configure Distribution Switches
+  hosts: distribution 
+  gather_facts: false
+  connection: network_cli
+
+  roles: 
+    - nxos_vlans
+    - nxos_vpc
+    - nxos_l3_interfaces
+    - nxos_hsrp
+    - nxos_ospf
+
+- name: Configure Access Switches
+  hosts: access  
+  gather_facts: false 
+  connection: network_cli
+  
+  roles: 
+    - nxos_vlans
+    - nxos_l3_interfaces
+    - nxos_po_trunks
+  
