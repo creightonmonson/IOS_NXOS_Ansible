@@ -1,0 +1,40 @@
+---
+- name: Enable Features
+  loop:
+    - lacp
+  nxos_feature:
+    feature: "{{ item }}"
+    state: enabled
+  tags: [trunks, vlan]
+
+- name: Create uplink Port Channel to Distribution
+  cisco.nxos.nxos_lag_interfaces:
+    config:
+      - name: "port-channel{{ item.port_channel_id }}"
+        members:
+          - member: "{{ item.members.0 }}"
+            mode: active
+          - member: "{{ item.members.1 }}"
+            mode: active
+  loop: "{{ uplinks }}"
+  tags: [trunks, vlan]
+
+- name: Make Port Channel layer 2
+  cisco.nxos.nxos_interfaces:
+    config:
+      - name: "port-channel{{ item.port_channel_id }}"
+        enabled: true
+        mode: layer2
+  loop: "{{ uplinks }}"
+  tags: [trunks, vlan]
+
+- name: Configure Port Channel as Trunk
+  cisco.nxos.nxos_l2_interfaces:
+    config:
+      - name: "port-channel{{ item.port_channel_id }}"
+        trunk: 
+          native-vlan: 1
+#          allowed-vlans: 100,101,102,103
+  loop: "{{ uplinks }}"
+  tags: [trunks, vlan]
+    
