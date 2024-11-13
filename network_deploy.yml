@@ -30,3 +30,16 @@
     - nxos_l3_interfaces
     - nxos_po_trunks
   
+- name: Save Router Configs if modified
+  hosts: iosxe
+  gather_facts: false
+  connection: network_cli
+
+  roles: ios_save
+
+- name: Save Switch Configs if modified
+  hosts: nxos 
+  gather_facts: false
+  connection: network_cli
+
+  roles: nxos_save
