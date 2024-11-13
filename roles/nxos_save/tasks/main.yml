@@ -1,0 +1,4 @@
+---
+- name: Save Running Config to Startup Config when modified
+  cisco.nxos.nxos_config:
+    save_when: modified

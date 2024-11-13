@@ -1,16 +1,18 @@
 ---
 - name: Enable Features
+  tags: hsrp
   loop:
     - hsrp
   cisco.nxos.nxos_feature:
     feature: "{{ item }}"
     state: enabled
-  tags: hsrp
+
 
 - name: Configure HSRP at Distribution
+  tags: hsrp 
+  loop: "{{ hsrp_interfaces }}"
   cisco.nxos.nxos_hsrp:
     group: "{{ item.group }}"
     vip: "{{ item.vip }}"
     interface: "{{ item.interface }}"
-  loop: "{{ hsrp_interfaces }}"
-  tags: hsrp 
+

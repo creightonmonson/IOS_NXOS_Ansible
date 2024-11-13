@@ -1,46 +1,53 @@
 ---
 - name: Enable Features
+  tags: [vpc, vlans, trunks]
   loop:
     - vpc
     - lacp
   cisco.nxos.nxos_feature:
     feature: "{{ item }}"
     state: enabled
-  tags: [vpc, vlan, trunks]
+
 
 - name: Create Port Channels for Access Switches
+  tags: [ vpc, vlans, trunks]
+  loop: "{{ trunks }}"
   cisco.nxos.nxos_lag_interfaces:
     config: 
       - name: "port-channel{{ item.port_channel_id }}"
         members: 
           - member: "{{ item.members.0 }}"
             mode: active
-  loop: "{{ trunks }}"
-  tags: [ vpc, vlan, trunks]
+
+
 
 - name: Make Port Channel Layer 2
+  tags: [ vpc, vlans, trunks]
+  loop: "{{ trunks }}"
   cisco.nxos.nxos_interfaces:
     config: 
       - name: "port-channel{{ item.port_channel_id }}"
         description: "VPC PortChannel"
         enabled: true 
         mode: layer2 
-  loop: "{{ trunks }}"
-  tags: [ vpc, vlan, trunks]
+
+
 
 - name: Configure Port Channel as Trunk
+  tags: [ vpc, vlans, trunks]
+  loop: "{{ trunks }}"
   cisco.nxos.nxos_l2_interfaces:
     config:
       - name: "port-channel{{ item.port_channel_id }}"
         trunk: 
           native-vlan: 1
 #          allowed-vlans: 100,101,102,103
-  loop: "{{ trunks }}"
-  tags: [ vpc, vlan, trunks]
+
+
 
 - name: Configure VPC for Trunks
+  tags: [vpc, vlans, trunks]
+  loop: "{{ trunks }}"
   cisco.nxos.nxos_vpc_interface:
     portchannel: "{{ item.port_channel_id }}"
     vpc: "{{ item.port_channel_id }}"
-  loop: "{{ trunks }}"
-  tags: [vpc, vlan, trunks]

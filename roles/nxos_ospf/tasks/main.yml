@@ -1,21 +1,25 @@
 ---
 - name: Enable Features
+  tags: ospf
   loop:
     - ospf
   cisco.nxos.nxos_feature:
     feature: "{{ item }}"
     state: enabled
-  tags: ospf
+
 
 - name: Configure OSPF 
+  tags: ospf
   cisco.nxos.nxos_ospfv2:
     config: 
       processess:
         process_id: "{{ ospf.process_id }}"
         router_id: "{{ ospf_router_id }}"
-  tags: ospf
+
 
 - name: Configure OSPF Interfaces
+  tags: ospf
+  loop: "{{ ospf.networks }}"
   cisco.nxos.nxos_ospf_interfaces:
     config:
       - name: "{{ item.interface }}"
@@ -24,5 +28,5 @@
             processes:
               - process_id: "{{ ospf.process_id }}"
                 area: "{{ item.area }}"
-  loop: "{{ ospf.networks }}"
-  tags: ospf
+
+

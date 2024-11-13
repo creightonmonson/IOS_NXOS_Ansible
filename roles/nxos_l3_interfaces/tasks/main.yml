@@ -1,25 +1,29 @@
 ---
 - name: Enable VLAN Feature
+  loop:
+  - interface-vlan
   cisco.nxos.nxos_feature:
     feature: "{{ item }}"
     state: enabled
-  loop:
-  - interface-vlan
+
 
 - name: Configure Nexus L3  Interfaces
+  tags: interface
+  loop: "{{ l3_interfaces }}"
   cisco.nxos.nxos_interfaces:
     config:
       - name: "{{ item.interface_type }}{{ item.interface_id }}"
         description: "{{ item.description }}"
         mode: layer3
-  loop: "{{ l3_interfaces }}"
-  tags: interface
+
+
 
 - name: Configure Nexus IP address on Routed Interfaces
+  tags: interface  
+  loop: "{{ l3_interfaces }}"
   cisco.nxos.nxos_l3_interfaces:
     config: 
       - name: "{{ item.interface_type }}{{ item.interface_id }}"
         ipv4:
           - address: "{{ item.ip_address }}/{{ item.prefix }}"
-  loop: "{{ l3_interfaces }}"
-  tags: interface
+
