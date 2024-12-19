@@ -15,9 +15,9 @@ hsrp_interfaces:
 ospf:
   process_id: 1
   networks:
-    - interface: Ethernet1/1
+    - interface: Ethernet0/0
       area: 0
-    - interface: Ethernet1/2
+    - interface: Ethernet0/1
       area: 0
     - interface: vlan100
       area: 0
@@ -35,9 +35,9 @@ vpc:
   port_channel:
     id: "1"
     members:
-      - Ethernet1/3
-      - Ethernet1/4
+      - Ethernet0/2
+      - Ethernet0/3
 trunks:
   - port_channel_id: 11
     members:
-      - Ethernet1/5
+      - Ethernet1/0
