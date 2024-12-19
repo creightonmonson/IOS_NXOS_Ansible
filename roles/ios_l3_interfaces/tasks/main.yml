@@ -4,10 +4,8 @@
   loop: "{{ l3_interfaces }}"
   cisco.ios.ios_interfaces:
     config:
-      - name: "{{ item.interface_type }}{{ interface_id }}"
+      - name: "{{ item.interface_type }}{{ item.interface_id }}"
         description: "{{ item.description }}"
-        enabled: " {{ item.enabled }}"
-
 
 - name: Configure Router Interfaces - L3 IPv4
   tags: interface
