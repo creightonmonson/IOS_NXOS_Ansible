@@ -11,14 +11,14 @@ l3_interfaces:
     prefix: 32
     area: 0
   - interface_type: Ethernet
-    interface_id: 0/0
+    interface_id: 1/1
     description: L3 Link to CORE-2
     ip_address: 172.16.0.14
     subnet_mask: 255.255.255.252
     prefix: 30
     area: 0
   - interface_type: Ethernet
-    interface_id: 0/1
+    interface_id: 1/2
     description: L3 Link to CORE-1
     ip_address: 172.16.0.6
     subnet_mask: 255.255.255.252

@@ -1,4 +1,5 @@
 ---
+ospf_router_id: 5.5.5.5
 l3_interfaces:
   - interface_type: Loopback
     interface_id: 0
