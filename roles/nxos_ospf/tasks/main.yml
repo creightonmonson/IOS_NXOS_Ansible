@@ -12,9 +12,9 @@
   tags: ospf
   cisco.nxos.nxos_ospfv2:
     config: 
-      processess:
-        process_id: "{{ ospf.process_id }}"
-        router_id: "{{ ospf_router_id }}"
+      processes:
+        - process_id: "{{ ospf.process_id }}"
+          router_id: "{{ ospf_router_id }}"
 
 
 - name: Configure OSPF Interfaces
@@ -27,6 +27,6 @@
           - afi: ipv4
             processes:
               - process_id: "{{ ospf.process_id }}"
-                area: "{{ item.area }}"
-
+                area:
+                  area_id: "{{ item.area }}"
 

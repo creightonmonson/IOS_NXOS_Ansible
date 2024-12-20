@@ -18,6 +18,7 @@
   roles: 
     - nxos_vlans
     - nxos_vpc
+    - nxos_vpc_trunks
     - nxos_l3_interfaces
     - nxos_hsrp
     - nxos_ospf
@@ -36,20 +37,20 @@
 
 ### Save Configs Block ###
 
-- name: Save Configs if modified
-  hosts: all
+- name: Save IOS Configs if modified
+  hosts: iosxe
   gather_facts: false
   connection: network_cli
-
   tasks:
-    - name: Save Config Confirmation
-      pause:
-        prompt: "Do you want to save the running-config to start? Press return to continue or ctrl+c then A to abort"
-
     - name: Save IOS Running Config to Startup Config
       cisco.ios.ios_config:
         save_when: modified
 
+- name: Save NXOS Configs if modified
+  hosts: nxos
+  gather_facts: false
+  connection: network_cli
+  tasks:
     - name: Save NXOS Running Config to Startup Config
       cisco.nxos.nxos_config:
         save_when: modified

@@ -1,46 +1,44 @@
 ---
-#- name: Enable Features
-#  tags: [trunks, vlans]
-#  loop:
-#    - lacp
-#  nxos_feature:
-#    feature: "{{ item }}"
-#    state: enabled
 - name: Create uplink Port Channel to Distribution
   tags: [trunks, vlans]
-  loop: "{{ uplinks }}"
+#  loop: "{{ uplinks }}"
   cisco.ios.ios_lag_interfaces:
     config:
-      - name: "port-channel{{ item.port_channel_id }}"
+      - name: "port-channel{{ uplinks.port_channel_id }}"
         members:
-          - member: "{{ item.members.0 }}"
+          - member: "{{ uplinks.members.0 }}"
             mode: active
-          - member: "{{ item.members.1 }}"
+          - member: "{{ uplinks.members.1 }}"
             mode: active
-
 
 
 - name: Make Port Channel layer 2
   tags: [trunks, vlans]
-  loop: "{{ uplinks }}"
+#  loop: "{{ uplinks }}"
   cisco.ios.ios_interfaces:
     config:
-      - name: "port-channel{{ item.port_channel_id }}"
+      - name: "port-channel{{ uplinks.port_channel_id }}"
         enabled: true
         mode: layer2
 
-
+- name: Configure Port Channel as Encapsulation dot1q
+  tags: [trunks, vlans]
+#  loop: "{{ uplinks }}"
+  cisco.ios.ios_l2_interfaces:
+    config:
+      - name: "port-channel{{ uplinks.port_channel_id }}"
+        trunk:
+          encapsulation: "{{ uplinks.encapsulation }}"
 
 - name: Configure Port Channel as Trunk
   tags: [trunks, vlans]
-  loop: "{{ uplinks }}"
-  cisco.nxos.nxos_l2_interfaces:
+#  loop: "{{ uplinks }}"
+  cisco.ios.ios_l2_interfaces:
     config:
-      - name: "port-channel{{ item.port_channel_id }}"
-        mode: "{{ item.mode }}"
+      - name: "port-channel{{ uplinks.port_channel_id }}"
+        mode: "{{ uplinks.mode }}"
         trunk:
-          native-vlan: 1
-        encapsulation: dot1q
+          native_vlan: 1
 
 #- name: Create uplink Port Channel to Distribution
 #  tags: [trunks, vlans]

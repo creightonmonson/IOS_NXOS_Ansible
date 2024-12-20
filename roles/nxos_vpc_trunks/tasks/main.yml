@@ -11,22 +11,22 @@
 
 - name: Create Port Channels for Access Switches
   tags: [ vpc, vlans, trunks]
-  loop: "{{ trunks }}"
+#  loop: "{{ trunks }}"
   cisco.nxos.nxos_lag_interfaces:
     config: 
-      - name: "port-channel{{ item.port_channel_id }}"
+      - name: "port-channel{{ trunks.port_channel_id }}"
         members: 
-          - member: "{{ item.members.0 }}"
+          - member: "{{ trunks.members.0 }}"
             mode: active
 
 
 
 - name: Make Port Channel Layer 2
   tags: [ vpc, vlans, trunks]
-  loop: "{{ trunks }}"
+#  loop: "{{ trunks }}"
   cisco.nxos.nxos_interfaces:
     config: 
-      - name: "port-channel{{ item.port_channel_id }}"
+      - name: "port-channel{{ trunks.port_channel_id }}"
         description: "VPC PortChannel"
         enabled: true 
         mode: layer2 
@@ -35,10 +35,10 @@
 
 - name: Configure Port Channel as Trunk
   tags: [ vpc, vlans, trunks]
-  loop: "{{ trunks }}"
+#  loop: "{{ trunks }}"
   cisco.nxos.nxos_l2_interfaces:
     config:
-      - name: "port-channel{{ item.port_channel_id }}"
+      - name: "port-channel{{ trunks.port_channel_id }}"
         trunk: 
           native_vlan: 1
 #          allowed-vlans: 100,101,102,103
@@ -47,7 +47,7 @@
 
 - name: Configure VPC for Trunks
   tags: [vpc, vlans, trunks]
-  loop: "{{ trunks }}"
+#  loop: "{{ trunks }}"
   cisco.nxos.nxos_vpc_interface:
-    portchannel: "{{ item.port_channel_id }}"
-    vpc: "{{ item.port_channel_id }}"
+    portchannel: "{{ trunks.port_channel_id }}"
+    vpc: "{{ vpc.domain }}"
