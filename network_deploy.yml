@@ -1,4 +1,5 @@
 ---
+### Configure Core routers L3 interfaces and enable OSPF ###
 - name: Configure Network CORE
   hosts: core 
   gather_facts: false
@@ -7,7 +8,8 @@
   roles:
     - ios_l3_interfaces
     - ios_ospf
-  
+
+### Configure Distribution L3 interfaces, OSPF, VPC, HSRP, and Trunks to access
 - name: Configure Distribution Switches
   hosts: distribution 
   gather_facts: false
@@ -20,6 +22,7 @@
     - nxos_hsrp
     - nxos_ospf
 
+### Configure Access layer vlans, trunks, and loopback address ###
 - name: Configure Access Switches
   hosts: access  
   gather_facts: false 
@@ -29,17 +32,24 @@
     - nxos_vlans
     - nxos_l3_interfaces
     - nxos_po_trunks
-  
-- name: Save Router Configs if modified
-  hosts: iosxe
+
+### Save Configs Block ###
+
+- name: Save Configs if modified
+  hosts: all
   gather_facts: false
   connection: network_cli
 
-  roles: ios_save
+  tasks:
+    - name: Save Config Confirmation
+      pause:
+        prompt: "Do you want to save the running-config to start? Press return to continue or ctrl+c then A to abort"
 
-- name: Save Switch Configs if modified
-  hosts: nxos 
-  gather_facts: false
-  connection: network_cli
+    - name: Save IOS Running Config to Startup Config
+      cisco.ios.ios_config:
+        save_when: modified
 
-  roles: nxos_save
+    - name: Save NXOS Running Config to Startup Config
+      cisco.nxos.nxos_config:
+        save_when: modified
+

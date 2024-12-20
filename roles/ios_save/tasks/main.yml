@@ -1,4 +1,0 @@
----
-- name: Save Running Config to Startup Config when modified
-  cisco.ios.ios_config:
-    save_when: modified
