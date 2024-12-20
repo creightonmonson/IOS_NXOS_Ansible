@@ -40,7 +40,7 @@
     config:
       - name: "port-channel{{ item.port_channel_id }}"
         trunk: 
-          native-vlan: 1
+          native_vlan: 1
 #          allowed-vlans: 100,101,102,103
 
 
