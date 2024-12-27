@@ -1,0 +1,22 @@
+---
+- name: Configure IOS SNMP
+  when: ansible_network_os == 'cisco.ios.ios'
+  loop: "{{ snmp_communities }}"
+  cisco.ios.ios_snmp_server:
+    state: merged
+    config:
+      location: "{{ snmp_location }}"
+      contact: "{{ snmp_contact }}"
+      communities:
+        - "{{ item }}"
+
+- name: Configure NXOS SNMP
+  when: ansible_network_os == 'cisco.nxos.nxos'
+  loop: "{{ snmp_communities }}"
+  cisco.nxos.nxos_snmp_server:
+    state: merged
+    config:
+      location: "{{ snmp_location }}"
+      contact: "{{ snmp_contact }}"
+      communities:
+        - "{{ item }}"

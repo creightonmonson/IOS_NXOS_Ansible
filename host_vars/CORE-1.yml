@@ -21,3 +21,4 @@ l3_interfaces:
     description: Default Loopback
     ip_address: 10.10.10.1
     prefix: 32
+mgmt_interface: Ethernet0/3

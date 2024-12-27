@@ -1,0 +1,16 @@
+---
+- name: Backup IOS Configs
+  when: ansible_network_os == 'cisco.ios.ios'
+  cisco.ios.ios_config:
+    backup: true
+    backup_options:
+      filename: "{{inventory_hostname}}-config.txt"
+      dir_path: ./configs/backups
+
+- name: Backup NXOS Configs
+  when: ansible_network_os == 'cisco.nxos.nxos'
+  cisco.ios.ios_config:
+    backup: true
+    backup_options:
+      filename: "{{inventory_hostname}}-config.txt"
+      dir_path: ./configs/backups

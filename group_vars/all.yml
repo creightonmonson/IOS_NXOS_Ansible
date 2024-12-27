@@ -1,4 +1,13 @@
 ---
+domain_name: lab.net
+domain_dns_server: 192.168.1.1
+snmp_communities:
+  - name: rocommunity1357!
+    ro: true
+  - name: rwcommunity2468!
+    rw: true
+snmp_contact: 'Network Engineering | admin@admin.com'
+snmp_location: serverroom-1-rack-4
 vlans:
   - id: 100
     name: VLAN100

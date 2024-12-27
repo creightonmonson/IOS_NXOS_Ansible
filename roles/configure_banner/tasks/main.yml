@@ -1,0 +1,12 @@
+---
+- name: Configure IOS Login Banner
+  when: ansible_network_os == 'cisco.ios.ios'
+  cisco.ios.ios_banner:
+    banner: login
+    text: "{{ login_text }}"
+
+- name: Configure NXOS Login Banner
+  when: ansible_network_os == 'cisco.nxos.nxos'
+  cisco.nxos.nxos_banner:
+    banner: motd
+    text: "{{ login_text }}"

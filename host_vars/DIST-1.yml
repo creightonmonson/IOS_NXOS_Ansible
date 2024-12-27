@@ -54,3 +54,4 @@ l3_interfaces:
     subnet_mask: 255.255.255.0
     prefix: 24
     area: 0
+mgmt_interface: mgmt0

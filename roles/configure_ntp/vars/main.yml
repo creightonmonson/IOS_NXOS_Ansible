@@ -1,0 +1,5 @@
+---
+ntp_server_1: 192.168.0.2
+ntp_server_2: 192.168.1.1
+ios_ntp_vrf: mgmt
+nxos_ntp_vrf: management

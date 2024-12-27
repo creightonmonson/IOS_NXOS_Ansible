@@ -1,0 +1,18 @@
+---
+- name: Configure Login Banner
+  ansible.builtin.import_playbook: configure_banner.yml
+
+- name: Configure DNS
+  ansible.builtin.import_playbook: configure_dns.yml
+
+- name: Configure Management Network Route
+  ansible.builtin.import_playbook: mgmt_static_route.yml
+
+- name: Configure NTP
+  ansible.builtin.import_playbook: configure_ntp.yml
+
+- name: Configure SNMP
+  ansible.builtin.import_playbook: configure_snmp.yml
+
+- name: Backup Configuration
+  ansible.builtin.import_playbook: backup_config.yml
