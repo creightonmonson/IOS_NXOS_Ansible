@@ -1,16 +1,27 @@
 # IOS_NXOS_Ansible
-Repo for using Ansible to deploy and maintain configuration baseline for 3-tier demo environment comprised of IOS-xe and NX-OS devices
+Repo for using Ansible to deploy and maintain configuration baseline for 3-tier demo environment comprised of IOS-xe and NX-OS devices. 
+
+This repo has 2 overarching playbooks that reference multiple plays/roles - `new_device.yml` and `network_deploy.yml`.
+
+The `new_device.yml` playbook imports individual plays which were left seperate in order to allow admins to use those plays as needed or reference in seperate playbooks (mainly used for configuring network services such as DNS, NTP, etc). 
+
+The `network_deploy.yml` playbook configures the network devices to meet the desired endstate referenced below. This is through the use of roles which reference variables either at the group or host level. Standalone plays can be added to the `network_deploy.yml` playbook as desired by using the ansible builtin module. For example, to capture a backup after the devices are configured, simply add this to the bottom of the `network_deploy.yml` file:
+
+`- name: Backup Configuration`
+
+`ansible.builtin.import_playbook: backup_config.yml`
+
 
 - Starting State:
     - Cable according to draw-io diagram. 
     - Update vars files to reflect interface types/IDs
-    - Complete initial configs of each device
+    - Complete initial configs of each device 
 - Initial Config:
     - Enable SSH
     - Create a user and password with priv 15
     - Create management vrf
     - Configure management interfaces to use vrf
-    - Add default static route for vrf
+    - Add default static route for vrf if ansible controller not in same vlan
     - Verify connetivity from Ansible controller to hosts:
      `ansible all -m ping `
 
@@ -28,6 +39,8 @@ As network endpoints, features, configurations are changed in the ansible enviro
 To run the playbook to only adjust the core devices, run: `ansible-playbook network_deploy.yml --limit core`
 
 To run the playbook solely based on tags, run: `ansible-playbook network_deploy.yml --tags "vlan"`
+
+To start the playbook at a specific task, run: `ansible-playbook network_deploy.yml --start-at-task="name of task as written in the specifc role>task>main.yml"`
 
 ## Future Developments
 The next step for this repo is to initialize and use IOS netconf and NX-OS API's for connectivity. This will allow us to easily incorporate jinja templates to generate configurations in xml format using appropriate structures. 
