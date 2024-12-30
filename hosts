@@ -1,17 +1,18 @@
 [iosxe:children]
 core
+access
 
 [nxos:children]
 distribution
-access
+
 
 [core]
-CORE-1 ansible_host=172.16.30.101
-CORE-2 ansible_host=172.16.30.102
+CORE-1 ansible_host=192.168.1.101
+CORE-2 ansible_host=192.168.1.102
 
 [distribution]
-DIST-1 ansible_host=172.16.30.201
-DIST-2 ansible_host=172.16.30.202
+DIST-1 ansible_host=192.168.1.201
+DIST-2 ansible_host=192.168.1.202
 
 [access]
-ACCESS-1 ansible_host=172.16.30.203
+ACCESS-1 ansible_host=192.168.1.203
