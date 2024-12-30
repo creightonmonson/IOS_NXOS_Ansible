@@ -8,12 +8,12 @@
   roles:
     - ios_ospf_jinja
 
-# - name: Deploy IOS OSPF Config
-#   hosts: iosxe 
-#   gather_facts: false
-#   connection: network_cli
+- name: Deploy IOS OSPF Config
+  hosts: iosxe 
+  gather_facts: false
+  connection: network_cli
 
-#   tasks:
-#     - name: Apply Config
-#       cisco.ios.ios_config:
-#         src: configs/{{ inventory_hostname }}-ospf.conf
+  tasks:
+    - name: Apply Config
+      cisco.ios.ios_config:
+        src: configs/{{ inventory_hostname }}-ospf.conf
