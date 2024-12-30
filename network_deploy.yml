@@ -1,13 +1,10 @@
 ---
 ### Configure Core routers L3 interfaces and enable OSPF ###
-- name: Configure Network CORE
-  hosts: core 
-  gather_facts: false
-  connection: network_cli
+- name: Configure IOS (core and access) L3 interfaces
+  ansible.builtin.import_playbook: ios_l3_config.yml
 
-  roles:
-    - ios_l3_interfaces
-    - ios_ospf
+- name: Configure IOS (core and access) OSPF
+  ansible.builtin.import_playbook: ios_ospf_config.yml
 
 ### Configure Distribution L3 interfaces, OSPF, VPC, HSRP, and Trunks to access
 - name: Configure Distribution Switches
@@ -31,9 +28,9 @@
   
   roles: 
     - access_vlans
-    - ios_l3_interfaces
+#    - ios_l3_interfaces
     - access_trunks
-    - ios_ospf
+#    - ios_ospf
 
 ### Save Configs Block ###
 
