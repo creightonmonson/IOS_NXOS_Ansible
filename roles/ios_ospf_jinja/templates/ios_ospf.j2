@@ -1,6 +1,6 @@
 router ospf 1
  router-id {{ router_id }}
- {% for NETWORK in networks %}
+ {% for NETWORK in ospf_networks %}
  network {{ NETWORK['network'] }} {{ NETWORK['mask'] }} area {{ NETWORK['area'] }}
  {% endfor %}
 !
