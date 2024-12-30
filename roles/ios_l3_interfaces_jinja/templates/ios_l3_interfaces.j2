@@ -2,7 +2,7 @@
 {% for INTERFACE in l3_interfaces %}
 interface {{ INTERFACE['interface_type'] }}{{ INTERFACE['interface_id'] }}
  description {{ INTERFACE['description'] }}
- ip address {{ INTERFACE['ip_address'] }}/{{ INTERFACE['netmask'] }}
+ ip address {{ INTERFACE['ip_address'] }} {{ INTERFACE['netmask'] }}
  no shutdown
 !
 {% endfor %}
