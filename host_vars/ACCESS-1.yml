@@ -1,5 +1,4 @@
 ---
-ospf_router_id: 5.5.5.5
 l3_interfaces:
   - interface_type: Loopback
     interface_id: 0
@@ -9,3 +8,8 @@ l3_interfaces:
     prefix: 32
     area: 0
 mgmt_interface: Ethernet0/3
+ospf_router_id: 5.5.5.5
+ospf_networks:
+    - network: 10.10.11.3
+      mask: 0.0.0.0
+      area: 0

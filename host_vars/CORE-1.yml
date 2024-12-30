@@ -1,5 +1,4 @@
 ---
-ospf_router_id: 1.1.1.1
 l3_interfaces:
   - interface_type: Ethernet
     interface_id: 0/0
@@ -26,3 +25,17 @@ l3_interfaces:
     netmask: 255.255.255.255
     prefix: 32
 mgmt_interface: Ethernet0/3
+ospf_router_id: 1.1.1.1
+ospf_networks:
+    - network: 172.16.0.0
+      mask: 0.0.0.3
+      area: 0
+    - network: 172.16.0.4
+      mask: 0.0.0.3
+      area: 0
+    - network: 172.16.0.16
+      mask: 0.0.0.3
+      area: 0
+    - network: 10.10.10.1
+      mask: 0.0.0.0
+      area: 0
