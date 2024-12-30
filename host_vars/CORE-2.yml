@@ -5,21 +5,25 @@ l3_interfaces:
     interface_id: 0/0
     description: L3 Link to DIST-2
     ip_address: 172.16.0.13
+    netmask: 255.255.255.252
     prefix: 30
   - interface_type: Ethernet
     interface_id: 0/1
     description: L3 Link to DIST-1
     ip_address: 172.16.0.9
+    netmask: 255.255.255.252
     prefix: 30
   - interface_type: Ethernet
     interface_id: 0/2
     description: L3 Link to CORE-1
     ip_address: 172.16.0.18
+    netmask: 255.255.255.252
     prefix: 30
   - interface_type: Loopback
     interface_id: 0
     description: Default Loopback
     ip_address: 10.10.10.2
+    netmask: 255.255.255.255
     prefix: 32
 mgmt_interface: Ethernet0/3
 
