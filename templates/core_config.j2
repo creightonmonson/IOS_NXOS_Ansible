@@ -1,0 +1,8 @@
+{# loop through each interface #}
+{% for INTERFACE in l3_interfaces %}
+    interface {{ INTERFACE['interface_type'] }}{{ INTERFACE['interface_id'] }}
+        description {{ INTERFACE['description'] }}
+        ip address {{ INTERFACE['ip_address'] }}/{{ INTERFACE['prefix'] }}
+        no shutdown
+        exit
+{% endfor %}
