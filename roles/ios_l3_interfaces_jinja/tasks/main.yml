@@ -1,0 +1,11 @@
+---
+- name: Generate IOS Configuration Files
+  loop: "{{ groups['iosxe'] }}"
+  vars:
+    l3_interfaces: "{{ hostvars[item]['l3_interfaces'] }}"
+  ansible.builtin.template:
+    src: templates/ios_l3_interfaces.j2
+    dest: "{{ config_dir }}/{{ item }}-l3-interfaces.conf"
+
+
+

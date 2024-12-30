@@ -1,0 +1,19 @@
+---
+- name: Generate IOS Layer 3 Interface Configuration Files from Templates
+  hosts: localhost
+  gather_facts: false
+  vars:
+    config_dir: "{{ playbook_dir }}/configs"
+
+  roles:
+    - ios_l3_interfaces_jinja
+
+- name: Deploy IOS Layer 3 Infterface Config
+  hosts: iosxe 
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: Apply Config
+      cisco.ios.ios_config:
+        src: configs/{{ inventory_hostname }}-l3-interfaces.conf
