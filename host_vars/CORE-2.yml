@@ -27,15 +27,15 @@ l3_interfaces:
 mgmt_interface: Ethernet0/3
 ospf_router_id: 2.2.2.2
 ospf_networks:
-    - network: 172.16.0.8
-      mask: 0.0.0.3
-      area: 0
-    - network: 172.16.0.12
-      mask: 0.0.0.3
-      area: 0
-    - network: 172.16.0.16
-      mask: 0.0.0.3
-      area: 0
-    - network: 10.10.10.2
-      mask: 0.0.0.0
-      area: 0
+  - network: 172.16.0.8
+    mask: 0.0.0.3
+    area: 0
+  - network: 172.16.0.12
+    mask: 0.0.0.3
+    area: 0
+  - network: 172.16.0.16
+    mask: 0.0.0.3
+    area: 0
+  - network: 10.10.10.2
+    mask: 0.0.0.0
+    area: 0
