@@ -1,5 +1,6 @@
 ---
-- name: Configure Netowrk CORE
+### Configure Core routers L3 interfaces and enable OSPF ###
+- name: Configure Network CORE
   hosts: core 
   gather_facts: false
   connection: network_cli
@@ -7,7 +8,8 @@
   roles:
     - ios_l3_interfaces
     - ios_ospf
-  
+
+### Configure Distribution L3 interfaces, OSPF, VPC, HSRP, and Trunks to access
 - name: Configure Distribution Switches
   hosts: distribution 
   gather_facts: false
@@ -16,30 +18,40 @@
   roles: 
     - nxos_vlans
     - nxos_vpc
+    - nxos_vpc_trunks
     - nxos_l3_interfaces
     - nxos_hsrp
     - nxos_ospf
 
+### Configure Access layer vlans, trunks, and loopback address ###
 - name: Configure Access Switches
   hosts: access  
   gather_facts: false 
   connection: network_cli
   
   roles: 
-    - nxos_vlans
-    - nxos_l3_interfaces
-    - nxos_po_trunks
-  
-- name: Save Router Configs if modified
+    - access_vlans
+    - ios_l3_interfaces
+    - access_trunks
+    - ios_ospf
+
+### Save Configs Block ###
+
+- name: Save IOS Configs if modified
   hosts: iosxe
   gather_facts: false
   connection: network_cli
+  tasks:
+    - name: Save IOS Running Config to Startup Config
+      cisco.ios.ios_config:
+        save_when: modified
 
-  roles: ios_save
-
-- name: Save Switch Configs if modified
-  hosts: nxos 
+- name: Save NXOS Configs if modified
+  hosts: nxos
   gather_facts: false
   connection: network_cli
+  tasks:
+    - name: Save NXOS Running Config to Startup Config
+      cisco.nxos.nxos_config:
+        save_when: modified
 
-  roles: nxos_save

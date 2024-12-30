@@ -1,0 +1,9 @@
+---
+- name: Configure NTP
+  hosts: all
+  gather_facts: false
+  connection: network_cli
+  roles:
+    - configure_ntp
+
+

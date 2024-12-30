@@ -1,0 +1,7 @@
+---
+- name: Configure Static Routes for Management Network
+  hosts: all
+  gather_facts: false
+  connection: network_cli
+  roles:
+    - mgmt_static_route

@@ -1,0 +1,101 @@
+
+PLAY [Configure Network CORE] **************************************************
+
+TASK [ios_l3_interfaces : Configure Interfaces - Status and Descriptions] ******
+ok: [CORE-2] => (item={'interface_type': 'Ethernet', 'interface_id': '0/0', 'description': 'L3 Link to DIST-2', 'ip_address': '172.16.0.13', 'prefix': 30})
+ok: [CORE-1] => (item={'interface_type': 'Ethernet', 'interface_id': '0/0', 'description': 'L3 Link to DIST-1', 'ip_address': '172.16.0.1', 'prefix': 30})
+ok: [CORE-2] => (item={'interface_type': 'Ethernet', 'interface_id': '0/1', 'description': 'L3 Link to DIST-1', 'ip_address': '172.16.0.9', 'prefix': 30})
+ok: [CORE-1] => (item={'interface_type': 'Ethernet', 'interface_id': '0/1', 'description': 'L3 Link to DIST-2', 'ip_address': '172.16.0.5', 'prefix': 30})
+ok: [CORE-1] => (item={'interface_type': 'Ethernet', 'interface_id': '0/2', 'description': 'L3 Link to CORE-2', 'ip_address': '172.16.0.17', 'prefix': 30})
+ok: [CORE-2] => (item={'interface_type': 'Ethernet', 'interface_id': '0/2', 'description': 'L3 Link to CORE-1', 'ip_address': '172.16.0.18', 'prefix': 30})
+ok: [CORE-1] => (item={'interface_type': 'Loopback', 'interface_id': 0, 'description': 'Default Loopback', 'ip_address': '10.10.10.1', 'prefix': 32})
+ok: [CORE-2] => (item={'interface_type': 'Loopback', 'interface_id': 0, 'description': 'Default Loopback', 'ip_address': '10.10.10.2', 'prefix': 32})
+
+TASK [ios_l3_interfaces : Configure Router Interfaces - L3 IPv4] ***************
+ok: [CORE-1] => (item={'interface_type': 'Ethernet', 'interface_id': '0/0', 'description': 'L3 Link to DIST-1', 'ip_address': '172.16.0.1', 'prefix': 30})
+ok: [CORE-2] => (item={'interface_type': 'Ethernet', 'interface_id': '0/0', 'description': 'L3 Link to DIST-2', 'ip_address': '172.16.0.13', 'prefix': 30})
+ok: [CORE-1] => (item={'interface_type': 'Ethernet', 'interface_id': '0/1', 'description': 'L3 Link to DIST-2', 'ip_address': '172.16.0.5', 'prefix': 30})
+ok: [CORE-2] => (item={'interface_type': 'Ethernet', 'interface_id': '0/1', 'description': 'L3 Link to DIST-1', 'ip_address': '172.16.0.9', 'prefix': 30})
+ok: [CORE-2] => (item={'interface_type': 'Ethernet', 'interface_id': '0/2', 'description': 'L3 Link to CORE-1', 'ip_address': '172.16.0.18', 'prefix': 30})
+ok: [CORE-1] => (item={'interface_type': 'Ethernet', 'interface_id': '0/2', 'description': 'L3 Link to CORE-2', 'ip_address': '172.16.0.17', 'prefix': 30})
+ok: [CORE-2] => (item={'interface_type': 'Loopback', 'interface_id': 0, 'description': 'Default Loopback', 'ip_address': '10.10.10.2', 'prefix': 32})
+ok: [CORE-1] => (item={'interface_type': 'Loopback', 'interface_id': 0, 'description': 'Default Loopback', 'ip_address': '10.10.10.1', 'prefix': 32})
+
+TASK [ios_ospf : Configure OSPF Process and Router ID] *************************
+ok: [CORE-1]
+ok: [CORE-2]
+
+TASK [ios_ospf : Configure OSPF Interfaces] ************************************
+ok: [CORE-1] => (item={'interface': 'Ethernet0/0', 'area': 0})
+ok: [CORE-2] => (item={'interface': 'Ethernet0/0', 'area': 0})
+ok: [CORE-2] => (item={'interface': 'Ethernet0/1', 'area': 0})
+ok: [CORE-1] => (item={'interface': 'Ethernet0/1', 'area': 0})
+ok: [CORE-1] => (item={'interface': 'Ethernet0/2', 'area': 0})
+ok: [CORE-2] => (item={'interface': 'Ethernet0/2', 'area': 0})
+changed: [CORE-2] => (item={'interface': 'loopback0', 'area': 0})
+changed: [CORE-1] => (item={'interface': 'loopback0', 'area': 0})
+
+PLAY [Configure Distribution Switches] *****************************************
+
+TASK [nxos_vlans : Configure NX-OS VLANs] **************************************
+ok: [DIST-2] => (item={'id': 100, 'name': 'VLAN100', 'gateway': '172.16.100.1'})
+changed: [DIST-1] => (item={'id': 100, 'name': 'VLAN100', 'gateway': '172.16.100.1'})
+changed: [DIST-1] => (item={'id': 101, 'name': 'VLAN101', 'gateway': '172.16.101.1'})
+ok: [DIST-2] => (item={'id': 101, 'name': 'VLAN101', 'gateway': '172.16.101.1'})
+changed: [DIST-1] => (item={'id': 102, 'name': 'VLAN102', 'gateway': '172.16.102.1'})
+ok: [DIST-2] => (item={'id': 102, 'name': 'VLAN102', 'gateway': '172.16.102.1'})
+changed: [DIST-1] => (item={'id': 103, 'name': 'VLAN103', 'gateway': '172.16.103.1'})
+ok: [DIST-2] => (item={'id': 103, 'name': 'VLAN103', 'gateway': '172.16.103.1'})
+
+TASK [nxos_vpc : Enable Features - VPC and LACP] *******************************
+ok: [DIST-2] => (item=vpc)
+ok: [DIST-2] => (item=lacp)
+changed: [DIST-1] => (item=vpc)
+changed: [DIST-1] => (item=lacp)
+
+TASK [nxos_vpc : Configure VPC] ************************************************
+changed: [DIST-1]
+ok: [DIST-2]
+
+TASK [nxos_vpc : Create Port Channel for VPC] **********************************
+ok: [DIST-2]
+changed: [DIST-1]
+
+TASK [nxos_vpc : Make VPC Port Channel Layer 2] ********************************
+ok: [DIST-2]
+changed: [DIST-1]
+
+TASK [nxos_vpc : Configure VPC Port Channel as Trunk] **************************
+changed: [DIST-1]
+changed: [DIST-2]
+
+TASK [nxos_vpc : Enable VPC Peer Link on port_channel] *************************
+changed: [DIST-1]
+changed: [DIST-2]
+
+TASK [nxos_l3_interfaces : Enable VLAN Feature] ********************************
+changed: [DIST-1] => (item=interface-vlan)
+changed: [DIST-2] => (item=interface-vlan)
+
+TASK [nxos_l3_interfaces : Configure Nexus L3  Interfaces] *********************
+failed: [DIST-1] (item={'interface_type': 'Loopback', 'interface_id': 0, 'description': 'Default Loopback', 'ip_address': '10.10.11.1', 'subnet_mask': '255.255.255.255', 'prefix': 32, 'area': 0}) => {"ansible_loop_var": "item", "changed": false, "item": {"area": 0, "description": "Default Loopback", "interface_id": 0, "interface_type": "Loopback", "ip_address": "10.10.11.1", "prefix": 32, "subnet_mask": "255.255.255.255"}, "module_stderr": "no switchport\r\r\n                            ^\r\n% Invalid command at '^' marker.\r\n\rDIST-1(config-if)# ", "module_stdout": "", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error"}
+failed: [DIST-2] (item={'interface_type': 'Loopback', 'interface_id': 0, 'description': 'Default Loopback', 'ip_address': '10.10.11.2', 'subnet_mask': '255.255.255.255', 'prefix': 32, 'area': 0}) => {"ansible_loop_var": "item", "changed": false, "item": {"area": 0, "description": "Default Loopback", "interface_id": 0, "interface_type": "Loopback", "ip_address": "10.10.11.2", "prefix": 32, "subnet_mask": "255.255.255.255"}, "module_stderr": "no switchport\r\r\n                            ^\r\n% Invalid command at '^' marker.\r\n\rDIST-2(config-if)# ", "module_stdout": "", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error"}
+changed: [DIST-1] => (item={'interface_type': 'Ethernet', 'interface_id': '1/1', 'description': 'L3 Link to CORE-1', 'ip_address': '172.16.0.2', 'subnet_mask': '255.255.255.252', 'prefix': 30, 'area': 0})
+changed: [DIST-2] => (item={'interface_type': 'Ethernet', 'interface_id': '1/1', 'description': 'L3 Link to CORE-2', 'ip_address': '172.16.0.14', 'subnet_mask': '255.255.255.252', 'prefix': 30, 'area': 0})
+changed: [DIST-1] => (item={'interface_type': 'Ethernet', 'interface_id': '1/2', 'description': 'L3 Link to CORE-2', 'ip_address': '172.16.0.10', 'subnet_mask': '255.255.255.252', 'prefix': 30, 'area': 0})
+changed: [DIST-2] => (item={'interface_type': 'Ethernet', 'interface_id': '1/2', 'description': 'L3 Link to CORE-1', 'ip_address': '172.16.0.6', 'subnet_mask': '255.255.255.252', 'prefix': 30, 'area': 0})
+failed: [DIST-1] (item={'interface_type': 'vlan', 'interface_id': 100, 'description': 'VLAN Interface - VLAN 100', 'ip_address': '172.16.100.2', 'subnet_mask': '255.255.255.0', 'prefix': 24, 'area': 0}) => {"ansible_loop_var": "item", "changed": false, "item": {"area": 0, "description": "VLAN Interface - VLAN 100", "interface_id": 100, "interface_type": "vlan", "ip_address": "172.16.100.2", "prefix": 24, "subnet_mask": "255.255.255.0"}, "module_stderr": "no switchport\r\r\n                            ^\r\n% Invalid command at '^' marker.\r\n\rDIST-1(config-if)# ", "module_stdout": "", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error"}
+failed: [DIST-2] (item={'interface_type': 'vlan', 'interface_id': 100, 'description': 'VLAN Interface - VLAN 100', 'ip_address': '172.16.100.3', 'subnet_mask': '255.255.255.0', 'prefix': 24, 'area': 0}) => {"ansible_loop_var": "item", "changed": false, "item": {"area": 0, "description": "VLAN Interface - VLAN 100", "interface_id": 100, "interface_type": "vlan", "ip_address": "172.16.100.3", "prefix": 24, "subnet_mask": "255.255.255.0"}, "module_stderr": "no switchport\r\r\n                            ^\r\n% Invalid command at '^' marker.\r\n\rDIST-2(config-if)# ", "module_stdout": "", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error"}
+failed: [DIST-1] (item={'interface_type': 'vlan', 'interface_id': 101, 'description': 'VLAN Interface - VLAN 101', 'ip_address': '172.16.101.2', 'subnet_mask': '255.255.255.0', 'prefix': 24, 'area': 0}) => {"ansible_loop_var": "item", "changed": false, "item": {"area": 0, "description": "VLAN Interface - VLAN 101", "interface_id": 101, "interface_type": "vlan", "ip_address": "172.16.101.2", "prefix": 24, "subnet_mask": "255.255.255.0"}, "module_stderr": "no switchport\r\r\n                            ^\r\n% Invalid command at '^' marker.\r\n\rDIST-1(config-if)# ", "module_stdout": "", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error"}
+failed: [DIST-2] (item={'interface_type': 'vlan', 'interface_id': 101, 'description': 'VLAN Interface - VLAN 101', 'ip_address': '172.16.101.3', 'subnet_mask': '255.255.255.0', 'prefix': 24, 'area': 0}) => {"ansible_loop_var": "item", "changed": false, "item": {"area": 0, "description": "VLAN Interface - VLAN 101", "interface_id": 101, "interface_type": "vlan", "ip_address": "172.16.101.3", "prefix": 24, "subnet_mask": "255.255.255.0"}, "module_stderr": "no switchport\r\r\n                            ^\r\n% Invalid command at '^' marker.\r\n\rDIST-2(config-if)# ", "module_stdout": "", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error"}
+failed: [DIST-1] (item={'interface_type': 'vlan', 'interface_id': 102, 'description': 'VLAN Interface - VLAN 102', 'ip_address': '172.16.102.2', 'subnet_mask': '255.255.255.0', 'prefix': 24, 'area': 0}) => {"ansible_loop_var": "item", "changed": false, "item": {"area": 0, "description": "VLAN Interface - VLAN 102", "interface_id": 102, "interface_type": "vlan", "ip_address": "172.16.102.2", "prefix": 24, "subnet_mask": "255.255.255.0"}, "module_stderr": "no switchport\r\r\n                            ^\r\n% Invalid command at '^' marker.\r\n\rDIST-1(config-if)# ", "module_stdout": "", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error"}
+failed: [DIST-2] (item={'interface_type': 'vlan', 'interface_id': 102, 'description': 'VLAN Interface - VLAN 102', 'ip_address': '172.16.102.3', 'subnet_mask': '255.255.255.0', 'prefix': 24, 'area': 0}) => {"ansible_loop_var": "item", "changed": false, "item": {"area": 0, "description": "VLAN Interface - VLAN 102", "interface_id": 102, "interface_type": "vlan", "ip_address": "172.16.102.3", "prefix": 24, "subnet_mask": "255.255.255.0"}, "module_stderr": "no switchport\r\r\n                            ^\r\n% Invalid command at '^' marker.\r\n\rDIST-2(config-if)# ", "module_stdout": "", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error"}
+failed: [DIST-1] (item={'interface_type': 'vlan', 'interface_id': 103, 'description': 'VLAN Interface - VLAN 103', 'ip_address': '172.16.103.2', 'subnet_mask': '255.255.255.0', 'prefix': 24, 'area': 0}) => {"ansible_loop_var": "item", "changed": false, "item": {"area": 0, "description": "VLAN Interface - VLAN 103", "interface_id": 103, "interface_type": "vlan", "ip_address": "172.16.103.2", "prefix": 24, "subnet_mask": "255.255.255.0"}, "module_stderr": "no switchport\r\r\n                            ^\r\n% Invalid command at '^' marker.\r\n\rDIST-1(config-if)# ", "module_stdout": "", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error"}
+failed: [DIST-2] (item={'interface_type': 'vlan', 'interface_id': 103, 'description': 'VLAN Interface - VLAN 103', 'ip_address': '172.16.103.3', 'subnet_mask': '255.255.255.0', 'prefix': 24, 'area': 0}) => {"ansible_loop_var": "item", "changed": false, "item": {"area": 0, "description": "VLAN Interface - VLAN 103", "interface_id": 103, "interface_type": "vlan", "ip_address": "172.16.103.3", "prefix": 24, "subnet_mask": "255.255.255.0"}, "module_stderr": "no switchport\r\r\n                            ^\r\n% Invalid command at '^' marker.\r\n\rDIST-2(config-if)# ", "module_stdout": "", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error"}
+
+PLAY RECAP *********************************************************************
+CORE-1                     : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+CORE-2                     : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+DIST-1                     : ok=8    changed=8    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+DIST-2                     : ok=8    changed=3    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+

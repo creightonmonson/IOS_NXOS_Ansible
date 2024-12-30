@@ -1,0 +1,193 @@
+Building configuration...
+
+Current configuration : 5438 bytes
+!
+! Last configuration change at 18:14:06 EST Tue Nov 28 2023 by cisco
+!
+version 17.12
+service config
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname CORE-2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition mgmt
+ !
+ address-family ipv4
+ exit-address-family
+!
+no aaa new-model
+!
+!
+!
+clock timezone EST -5 0
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip name-server 192.168.1.1
+ip domain name lab.net
+ip cef
+login on-success log
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+crypto pki trustpoint TP-self-signed-67108896
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-67108896
+ revocation-check none
+ rsakeypair TP-self-signed-67108896
+ hash sha256
+!
+!
+crypto pki certificate chain TP-self-signed-67108896
+ certificate self-signed 01
+  3082032C 30820214 A0030201 02020101 300D0609 2A864886 F70D0101 0B050030 
+  2F312D30 2B060355 04030C24 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 36373130 38383936 301E170D 32333132 32343233 30303430 
+  5A170D33 33313232 33323330 3034305A 302F312D 302B0603 5504030C 24494F53 
+  2D53656C 662D5369 676E6564 2D436572 74696669 63617465 2D363731 30383839 
+  36308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 0A028201 
+  0100F6E8 BA48DA0C 9A65142A C3C6482F D879B287 861E9CCD E82BF9C3 799A9C68 
+  7D8AD1D9 8937C792 42834B6E 1A40F32B ED5C6BCC 37BEA2EF F16E7D79 048AA31E 
+  E926CF0D 59138252 1D80299A CE8793E5 39243806 8AF126AA AFB20473 75E027C7 
+  9BF84550 E01214BF B5FAAAA8 247B11BA 47E72534 5EE6127F 75C5A818 16D24932 
+  472FC59A BC7238D8 B9FA2FF9 6770ABFE C22F1257 1C731414 D57F03BB 0883106E 
+  297EF5BC 93DBE9F8 76564306 2143AAE3 79EB16B7 BCB5CB5E 31B49AE5 ADB0A51C 
+  86ADEEF0 5A3947C1 18A29564 631740D9 B28E7FF5 C3434EDA 06D1A9C0 84D27F95 
+  ED8A5FD3 5044F3B4 249E5EC2 058320D4 FB617BE2 984AF556 64676F97 DDD19FF0 
+  473B0203 010001A3 53305130 1D060355 1D0E0416 041463E9 47EC613F 52C79BEC 
+  E55B0475 CA3D1911 4207301F 0603551D 23041830 16801463 E947EC61 3F52C79B 
+  ECE55B04 75CA3D19 11420730 0F060355 1D130101 FF040530 030101FF 300D0609 
+  2A864886 F70D0101 0B050003 82010100 9D016D95 2932B7FA 37B8D77E 38DE460F 
+  AEDED16F 7DC8C331 C9E0DB27 6FF6B058 B5167A7A B8E55AE9 C2538F87 A1886C85 
+  4CAD8856 1000F7FF 6EBF2243 BE743C7A 4CC8796D 6B8FC648 CB816F4F D35D655A 
+  9E36921E 021043A3 94EFD602 BD074D70 C2940816 4259144D A5C30275 2350E875 
+  BCFA4D06 9D006CA5 6527EF85 BAB61A70 B36AA5A9 33A9E993 0A65C71B C50869D6 
+  67D05A3A 7903113C 16E6B745 BAF487B8 8C1023A9 A593ECCF 076BD3AE 01D378A4 
+  BB333137 F80C924D B6FE739B BE7FD04F 356E8E04 9504B6A0 DDE03233 40334EF3 
+  CE4CF668 C817942B C0750CE4 DB926551 A18D6F7F 7AFAB380 E9AEE711 BB669262 
+  755119AF 68E8DF46 279BF150 84AAB6F0
+  	quit
+!
+!
+memory free low-watermark processor 81225
+!
+!
+spanning-tree mode rapid-pvst
+!
+!
+username cisco privilege 15 secret 9 $9$oBixjgtLqrbIek$X4vNKzEDd6/B3oPKZ9.oZ9K0eXgLpFTa0gb6f.4UoX.
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Default Loopback
+ ip address 10.10.10.2 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Ethernet0/0
+ description L3 Link to DIST-2
+ ip address 172.16.0.13 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/1
+ description L3 Link to DIST-1
+ ip address 172.16.0.9 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/2
+ description L3 Link to CORE-1
+ ip address 172.16.0.18 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/3
+ vrf forwarding mgmt
+ ip address 192.168.1.102 255.255.255.0
+!
+router ospf 1
+ router-id 2.2.2.2
+!
+ip forward-protocol nd
+!
+!
+ip http server
+ip http secure-server
+ip route vrf mgmt 192.168.0.0 255.255.255.0 Ethernet0/3 192.168.1.1 name route_to_mgmt_network
+ip ssh bulk-mode 131072
+!
+!
+!
+snmp-server community rocommunity1357! RO
+snmp-server community rwcommunity2468! RW
+snmp-server location serverroom-1-rack-4
+snmp-server contact Network Engineering | admin@admin.com
+!
+!
+control-plane
+!
+!
+banner login ^C
+You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and
+counterintelligence (CI) investigations.
+-At any time, the USG may inspect and seize data stored on this IS.
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG authorized purpose.
+-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE, or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys,
+psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
+^C
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+!
+ntp source Ethernet0/3
+ntp server vrf mgmt 192.168.1.1
+ntp server vrf mgmt 192.168.0.2 prefer
+!
+!
+!
+end

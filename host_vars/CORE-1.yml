@@ -1,23 +1,24 @@
 ---
-ospf_router_id: 192.168.1.1
+ospf_router_id: 1.1.1.1
 l3_interfaces:
-  - interface_type: GigabitEthernet
-    interface_id: 2
+  - interface_type: Ethernet
+    interface_id: 0/0
     description: L3 Link to DIST-1
     ip_address: 172.16.0.1
     prefix: 30
-  - interface_type: GigabitEthernet
-    interface_id: 3
+  - interface_type: Ethernet
+    interface_id: 0/1
     description: L3 Link to DIST-2
     ip_address: 172.16.0.5
     prefix: 30
-  - interface_type: GigabitEthernet
-    interface_id: 4
+  - interface_type: Ethernet
+    interface_id: 0/2
     description: L3 Link to CORE-2
     ip_address: 172.16.0.17
     prefix: 30
   - interface_type: Loopback
     interface_id: 0
     description: Default Loopback
-    ip_address: 192.168.1.1
+    ip_address: 10.10.10.1
     prefix: 32
+mgmt_interface: Ethernet0/3

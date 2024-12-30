@@ -1,6 +1,14 @@
 ---
 uplinks:
-  - port_channel_id: 11
-    members:
-      - Ethernet1/1
-      - Ethernet1/2
+  port_channel_id: 11
+  members:
+    - Ethernet0/0
+    - Ethernet0/1
+  mode: trunk
+  encapsulation: dot1q
+
+ospf:
+  process_id: 1
+  networks:
+    - interface: loopback0
+      area: 0
