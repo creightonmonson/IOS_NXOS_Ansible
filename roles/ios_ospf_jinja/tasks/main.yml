@@ -3,7 +3,7 @@
   loop: "{{ groups['iosxe'] }}"
   vars:
     router_id: "{{ hostvars[item]['ospf_router_id'] }}"
-    ospf_network: "{{ hostvars[item]['ospf_networks'] }}"
+    ospf_networks: "{{ hostvars[item]['ospf_networks'] }}"
   ansible.builtin.template:
     src: templates/ios_ospf.j2
     dest: "{{ config_dir }}/{{ item }}-ospf.conf"
