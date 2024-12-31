@@ -41,7 +41,7 @@
       - name: "port-channel{{ trunks.port_channel_id }}"
         trunk: 
           native_vlan: 1
-          allowed-vlans: 100,101,102,103
+          allowed_vlans: 100,101,102,103
 
 
 
