@@ -1,0 +1,8 @@
+---
+- name: Generate Access VLAN Configuration Files
+  loop: "{{ groups['access'] }}"
+  vars:
+    vlans: "{{ hostvars[item]['vlans'] }}"
+  ansible.builtin.template:
+    src: templates/vlans.j2
+    dest: "{{ config_dir }}/{{ item }}-vlans.conf"

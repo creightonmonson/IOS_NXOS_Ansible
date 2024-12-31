@@ -13,3 +13,16 @@ ospf_networks:
   - network: 10.10.11.3
     mask: 0.0.0.0
     area: 0
+vlans:
+  - id: 100
+    name: VLAN100
+    gateway: 172.16.100.1
+  - id: 101
+    name: VLAN101
+    gateway: 172.16.101.1
+  - id: 102
+    name: VLAN102
+    gateway: 172.16.102.1
+  - id: 103
+    name: VLAN103
+    gateway: 172.16.103.1
