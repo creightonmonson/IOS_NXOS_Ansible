@@ -48,7 +48,7 @@
       - name: "port-channel{{ vpc.port_channel.id }}"
         trunk: 
           native_vlan: 1
-#          allowed-vlans: 100,101,102,103
+          allowed-vlans: 100,101,102,103
 
 
 - name: Enable VPC Peer Link on port_channel

@@ -3,6 +3,7 @@ interface port-channel {{ uplinks.port_channel_id }}
  description port-channel to distribution layer
  switchport trunk encapsulation {{ uplinks.encapsulation }}
  switchport mode {{ uplinks.mode }}
+ switchport trunk allowed vlan 100-103
 
 {% for INTERFACES in uplinks.members %}
 interface {{ INTERFACES }}

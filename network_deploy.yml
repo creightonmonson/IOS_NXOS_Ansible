@@ -21,16 +21,11 @@
     - nxos_ospf
 
 ### Configure Access layer vlans, trunks, and loopback address ###
-- name: Configure Access Switches
-  hosts: access  
-  gather_facts: false 
-  connection: network_cli
+- name: Configure Access Switches VLANS
+  ansible.builtin.import_playbook: access_vlans_config.yml
   
-  roles: 
-    - access_vlans
-#    - ios_l3_interfaces
-    - access_trunks
-#    - ios_ospf
+- name: Configure Access Switches Uplinks to DIST (Port-Channel and Trunks)
+  ansible.builtin.import_playbook: access_uplinks_config.yml 
 
 ### Save Configs Block ###
 
