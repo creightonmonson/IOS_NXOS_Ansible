@@ -1,0 +1,15 @@
+{# configure port channel and then add interfaces #}
+interface port-channel {{ uplinks.port_channel_id }}
+ description port-channel to distribution layer
+ switchport trunk encapsulation {{ uplinks.encapsulation }}
+ switchport mode {{ uplinks.mode }}
+
+{% for INTERFACES in uplinks.members %}
+interface {{ INTERFACES }}
+ switchport trunk encapsulation {{ uplinks.encapsulation }}
+ channel-group {{ uplinks.port_channel_id }} mode active
+ no shutdown
+
+interface port-channel {{ uplinks.port_channel_id }}
+ no shutdown
+

@@ -26,3 +26,10 @@ vlans:
   - id: 103
     name: VLAN103
     gateway: 172.16.103.1
+uplinks:
+  port_channel_id: 1
+  members:
+    - Ethernet0/0
+    - Ethernet0/1
+  mode: trunk
+  encapsulation: dot1q

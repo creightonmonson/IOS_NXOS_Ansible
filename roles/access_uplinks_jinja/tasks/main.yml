@@ -1,0 +1,8 @@
+---
+- name: Generate Access Uplinks Configuration Files
+  loop: "{{ groups['access'] }}"
+  vars:
+    uplinks: "{{ hostvars[item]['uplinks'] }}"
+  ansible.builtin.template:
+    src: templates/uplinks.j2
+    dest: "{{ config_dir }}/{{ item }}-uplinks.conf"
