@@ -9,7 +9,9 @@ interface {{ INTERFACES }}
  switchport trunk encapsulation {{ uplinks.encapsulation }}
  channel-group {{ uplinks.port_channel_id }} mode active
  no shutdown
+{% endfor %}
 
 interface port-channel {{ uplinks.port_channel_id }}
  no shutdown
 
+end
