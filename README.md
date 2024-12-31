@@ -1,5 +1,13 @@
-# IOS_NXOS_Ansible
-Repo for using Ansible to deploy and maintain configuration baseline for 3-tier demo environment comprised of IOS-xe and NX-OS devices. 
+# IOS_NXOS_Ansible - Jinja Branch
+
+Repo for using Ansible to deploy and maintain configuration baseline for 3-tier demo environment comprised of IOS-xe and NX-OS devices. Key changes from main branch are using jinja templates for all IOS configurations, specifically the playbooks:
+```
+- ios_l3_config.yml
+- ios_ospf_config.yml
+- access_vlans_config.yml
+- access_uplinks_config.yml
+```
+These are imported in the `network_deploy.yml` playbook and may eventually be copied there entirely to clean directory structure.
 
 This repo has 2 overarching playbooks that reference multiple plays/roles - `new_device.yml` and `network_deploy.yml`.
 
@@ -7,10 +15,10 @@ The `new_device.yml` playbook imports individual plays which were left seperate 
 
 The `network_deploy.yml` playbook configures the network devices to meet the desired endstate referenced below. This is through the use of roles which reference variables either at the group or host level. Standalone plays can be added to the `network_deploy.yml` playbook as desired by using the ansible builtin module. For example, to capture a backup after the devices are configured, simply add this to the bottom of the `network_deploy.yml` file:
 
-`- name: Backup Configuration`
-
-`ansible.builtin.import_playbook: backup_config.yml`
-
+```
+- name: Backup Configuration
+  ansible.builtin.import_playbook: backup_config.yml
+```
 
 - Starting State:
     - Cable according to draw-io diagram. 
@@ -43,4 +51,4 @@ To run the playbook solely based on tags, run: `ansible-playbook network_deploy.
 To start the playbook at a specific task, run: `ansible-playbook network_deploy.yml --start-at-task="name of task as written in the specifc role>task>main.yml"`
 
 ## Future Developments
-The next step for this repo is to initialize and use IOS netconf and NX-OS API's for connectivity. This will allow us to easily incorporate jinja templates to generate configurations in xml format using appropriate structures. 
+Convert all roles to jinja templates, which reduces run time and dependency on ansible-galaxy modules.

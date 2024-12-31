@@ -1,4 +1,5 @@
 ---
+# loops through the hosts in iosxe group and pulls in the host_vars array "ospf_networks" and "router_id" per host
 - name: Generate IOS OSPF Configuration Files
   loop: "{{ groups['iosxe'] }}"
   vars:

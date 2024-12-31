@@ -1,12 +1,14 @@
 ---
 ### Configure Core routers L3 interfaces and enable OSPF ###
+
 - name: Configure IOS (core and access) L3 interfaces
   ansible.builtin.import_playbook: ios_l3_config.yml
 
 - name: Configure IOS (core and access) OSPF
   ansible.builtin.import_playbook: ios_ospf_config.yml
 
-### Configure Distribution L3 interfaces, OSPF, VPC, HSRP, and Trunks to access
+### Configure Distribution L3 interfaces, OSPF, VPC, HSRP, and Trunks to access ###
+
 - name: Configure Distribution Switches
   hosts: distribution 
   gather_facts: false
@@ -21,10 +23,11 @@
     - nxos_ospf
 
 ### Configure Access layer vlans, trunks, and loopback address ###
+
 - name: Configure Access Switches VLANS
   ansible.builtin.import_playbook: access_vlans_config.yml
   
-- name: Configure Access Switches Uplinks to DIST (Port-Channel and Trunks)
+- name: Configure Access Switches Uplinks to DIST Port-Channel and Trunks
   ansible.builtin.import_playbook: access_uplinks_config.yml 
 
 ### Save Configs Block ###

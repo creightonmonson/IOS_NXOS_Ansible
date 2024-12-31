@@ -6,7 +6,6 @@
     feature: "{{ item }}"
     state: enabled
 
-
 - name: Configure Nexus L3 Physical Interfaces
   tags: interface
   loop: "{{ l3_interfaces }}"

@@ -8,7 +8,7 @@
     feature: "{{ item }}"
     state: enabled
 
-
+# BELOW LOOPS ARE COMMENTED OUT due to configuring 1 interface but should be altered when additional access switches are added 
 - name: Create Port Channels for Access Switches
   tags: [ vpc, vlans, trunks]
 #  loop: "{{ trunks }}"

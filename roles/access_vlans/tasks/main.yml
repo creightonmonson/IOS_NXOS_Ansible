@@ -1,8 +1,0 @@
----
-- name: Configure Access VLANs
-  tags: vlans
-  loop: "{{ vlans }}"
-  cisco.ios.ios_vlans:
-    config:
-      - vlan_id: "{{ item.id }}"
-        name: "{{ item.name }}"

@@ -1,4 +1,5 @@
 ---
+# loops through the hosts in access group and pulls in the host_vars array "uplinks" per host
 - name: Generate Access Uplinks Configuration Files
   loop: "{{ groups['access'] }}"
   vars:
