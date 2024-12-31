@@ -46,6 +46,7 @@
   cisco.nxos.nxos_l2_interfaces:
     config:
       - name: "port-channel{{ vpc.port_channel.id }}"
+        mode: trunk
         trunk: 
           native_vlan: 1
           allowed_vlans: 100,101,102,103
