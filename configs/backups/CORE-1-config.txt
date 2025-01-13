@@ -1,0 +1,193 @@
+Building configuration...
+
+Current configuration : 5478 bytes
+!
+! Last configuration change at 18:14:06 EST Tue Nov 28 2023 by cisco
+!
+version 17.12
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname CORE-1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition mgmt
+ !
+ address-family ipv4
+ exit-address-family
+!
+no aaa new-model
+!
+!
+!
+clock timezone EST -5 0
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip name-server 192.168.1.1
+ip domain name lab.net
+ip cef
+login on-success log
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+crypto pki trustpoint TP-self-signed-67108880
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-67108880
+ revocation-check none
+ rsakeypair TP-self-signed-67108880
+ hash sha256
+!
+!
+crypto pki certificate chain TP-self-signed-67108880
+ certificate self-signed 01
+  3082032C 30820214 A0030201 02020101 300D0609 2A864886 F70D0101 0B050030 
+  2F312D30 2B060355 04030C24 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 36373130 38383830 301E170D 32333132 32333031 30383234 
+  5A170D33 33313232 32303130 3832345A 302F312D 302B0603 5504030C 24494F53 
+  2D53656C 662D5369 676E6564 2D436572 74696669 63617465 2D363731 30383838 
+  30308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 0A028201 
+  0100EBC7 52195C2E AEFC025E DE5CF509 443383D6 87B51F02 A9F2A078 CB23006C 
+  308E991B C8D44309 F1E0310C DE5C3488 D6FDF4C5 740C44F3 CC81EEF7 73E644B5 
+  7AE83BCA 353B8AAF 187CB2A8 689E8836 5FA893F4 310696BE CEE14FEF 502B90FB 
+  A04228FD 57C50B51 2DF32D0C 0E6ACDD4 A171E927 864E4800 3854FD4D F36E23FE 
+  6407EA47 F857316E 15498026 A655E8F4 F47BE54F 2F92345A D1A88954 C3A863A2 
+  BD3D6F4C 41FBA7AA DBB8B4E0 DA110DE1 8B6DBB42 25D9979F E36D988E 785689E4 
+  D75CC2B6 8D56721D 799C6FDE 1197A5C8 CD712EDC 13B42497 B8F3BB8A 335CD9C0 
+  9013ADF5 CA7DAE49 0C6A454F 19789313 1979D69C B3B890C0 F60CB7C1 C19D2E51 
+  5BCF0203 010001A3 53305130 1D060355 1D0E0416 04149E33 CC77C40C 1DDB41F0 
+  E2692D08 20B8620F BC26301F 0603551D 23041830 1680149E 33CC77C4 0C1DDB41 
+  F0E2692D 0820B862 0FBC2630 0F060355 1D130101 FF040530 030101FF 300D0609 
+  2A864886 F70D0101 0B050003 82010100 5E4AD8AE 24059F04 66A61AAF 260D29C4 
+  5084A8FF F8FDC320 2B9811CD BDB124A8 3190414E 7775803D 437515E9 87AEB004 
+  EC80BB66 E13ED8C4 68C461C8 B76BCC81 7DFECA10 BE26E983 BEB98A58 1187AF9E 
+  15028807 58B6F727 74AAD86D C13C3BED D3171BDF 18531A06 452C60AC 9A166066 
+  6AB9AAFE DE7FE214 5403F94B 2875A0DB 31F5173D D5FA1636 7BD7362B 623037A7 
+  6F7A1662 D5FB0CDF 1B5FD4B7 FF321CA7 01208B1B 75F88A81 BDA76FC6 E7C33147 
+  3652BB08 AC0F5E72 59AC46E1 D85BE09F FDA38C05 545F17EF 1EA57F45 0978C88C 
+  6528779E 331A0FFF 9E90C468 9A0F182C D50EDE13 275E5D27 4AC87DFB 3B46045C 
+  56AC0DB3 A2ACC956 EE0EB399 FCC5CA98
+  	quit
+!
+!
+memory free low-watermark processor 81225
+!
+!
+spanning-tree mode rapid-pvst
+!
+!
+username cisco privilege 15 secret 9 $9$tnA2lAmT6KApWU$8yxpfu6w3UojYFEgA7FkMwUzq3HQtDwayEtjtREnD2o
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Default Loopback
+ ip address 10.10.10.1 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Ethernet0/0
+ description L3 Link to DIST-1
+ ip address 172.16.0.1 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/1
+ description L3 Link to DIST-2
+ ip address 172.16.0.5 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/2
+ description L3 Link to CORE-2
+ ip address 172.16.0.17 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/3
+ vrf forwarding mgmt
+ ip address 192.168.1.101 255.255.255.0
+!
+router ospf 1
+ router-id 1.1.1.1
+!
+ip forward-protocol nd
+!
+!
+ip http server
+ip http secure-server
+ip route vrf mgmt 192.168.0.0 255.255.255.0 192.168.1.1
+ip route vrf mgmt 192.168.0.0 255.255.255.0 Ethernet0/3 192.168.1.1 name route_to_mgmt_network
+ip ssh bulk-mode 131072
+!
+!
+!
+snmp-server community rocommunity1357! RO
+snmp-server community rwcommunity2468! RW
+snmp-server location serverroom-1-rack-4
+snmp-server contact Network Engineering | admin@admin.com
+!
+!
+control-plane
+!
+!
+banner login ^C
+You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and
+counterintelligence (CI) investigations.
+-At any time, the USG may inspect and seize data stored on this IS.
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG authorized purpose.
+-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE, or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys,
+psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
+^C
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+!
+ntp source Ethernet0/3
+ntp server vrf mgmt 192.168.1.1
+ntp server vrf mgmt 192.168.0.2 prefer
+!
+!
+!
+end

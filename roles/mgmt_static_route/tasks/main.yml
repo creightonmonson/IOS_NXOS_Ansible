@@ -1,0 +1,27 @@
+- name: Configure MGMT static routes on IOS devices
+  when: ansible_network_os == 'cisco.ios.ios'
+  cisco.ios.ios_static_routes:
+    config:
+      - vrf: mgmt
+        address_families:
+          - afi: ipv4
+            routes:
+              - dest: 192.168.0.0/24
+                next_hops:
+                  - forward_router_address: "{{ next_hop_ip }}"
+                    interface: "{{ mgmt_interface }}"
+                    name: "{{ mgmt_route_name }}"
+
+- name: Configure MGMT static routes on NXOS devices
+  when: ansible_network_os == 'cisco.nxos.nxos'
+  cisco.nxos.nxos_static_routes:
+    config:
+      - vrf: management
+        address_families:
+          - afi: ipv4
+            routes:
+              - dest: 192.168.0.0/24
+                next_hops:
+                  - forward_router_address: "{{ next_hop_ip }}"
+                    interface: "{{ mgmt_interface }}"
+                    route_name: "{{ mgmt_route_name }}"

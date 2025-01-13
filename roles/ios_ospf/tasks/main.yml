@@ -7,7 +7,6 @@
         - router_id: "{{ ospf_router_id }}"
           process_id: "{{ ospf.process_id }}"
 
-
 - name: Configure OSPF Interfaces
   tags: ospf
   loop: "{{ ospf.networks }}"

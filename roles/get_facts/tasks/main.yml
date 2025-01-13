@@ -1,0 +1,32 @@
+---
+- name: 'Retrieve IOS facts'
+  when: ansible_network_os == 'cisco.ios.ios'
+  cisco.ios.ios_facts:
+
+- name: 'Retrieve NXOS facts'
+  when: ansible_network_os == 'cisco.nxos.nxos'
+  cisco.nxos.nxos_facts:
+
+- name: "Show version and serial number"
+  debug:
+    msg: "The version is: {{ ansible_net_version }} and the SN is: {{ ansible_net_serialnum }}"
+
+- name: 'Display IOS interfaces'
+  when: ansible_network_os == 'cisco.ios.ios'
+  cisco.ios.ios_command:
+    commands: show ip interface brief
+  register: interfaces_ios
+
+- name: 'Display NXOS interfaces'
+  when: ansible_network_os == 'cisco.nxos.nxos'
+  cisco.nxos.nxos_command:
+    commands: show ip interface brief
+  register: interfaces_nxos
+
+- name: "print show interfaces output for IOS devices"
+  debug:
+    var: interfaces_ios.stdout_lines[0]
+
+- name: "print show interfaces output for NXOS devices"
+  debug:
+    var: interfaces_nxos.stdout_lines[0]

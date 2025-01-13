@@ -47,7 +47,7 @@
     config:
       - name: "port-channel{{ vpc.port_channel.id }}"
         trunk: 
-          native-vlan: 1
+          native_vlan: 1
 #          allowed-vlans: 100,101,102,103
 
 

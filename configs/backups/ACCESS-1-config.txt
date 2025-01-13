@@ -1,0 +1,144 @@
+Building configuration...
+
+Current configuration : 3340 bytes
+!
+! Last configuration change at 18:14:05 EST Tue Nov 28 2023 by cisco
+!
+version 17.12
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname ACCESS-1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition mgmt
+ !
+ address-family ipv4
+ exit-address-family
+!
+no aaa new-model
+!
+!
+!
+clock timezone EST -5 0
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip audit notify log
+ip audit po max-events 100
+ip name-server 192.168.1.1
+ip domain name lab.net
+ip cef
+login on-success log
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+vtp version 1
+multilink bundle-name authenticated
+!
+!
+!
+!
+memory free low-watermark processor 80589
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+username cisco privilege 15 secret 9 $9$5fYDhlpHInSutk$MfFn8OZ5g8rpRCVsViB8e9prLPMqC1mx.Tir68hQ09.
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+interface Loopback0
+ description Default Loopback
+ ip address 10.10.11.3 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Port-channel11
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 11 mode active
+!
+interface Ethernet0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 11 mode active
+!
+interface Ethernet0/2
+!
+interface Ethernet0/3
+ no switchport
+ vrf forwarding mgmt
+ ip address 192.168.1.203 255.255.255.0
+!
+router ospf 1
+ router-id 5.5.5.5
+!
+ip forward-protocol nd
+!
+!
+ip http server
+ip http secure-server
+ip ssh bulk-mode 131072
+ip route vrf mgmt 192.168.0.0 255.255.255.0 Ethernet0/3 192.168.1.1 name route_to_mgmt_network
+!
+!
+!
+snmp-server community rocommunity1357! RO
+snmp-server community rwcommunity2468! RW
+snmp-server location serverroom-1-rack-4
+snmp-server contact Network Engineering | admin@admin.com
+!
+!
+!
+control-plane
+!
+!
+banner login ^C
+You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and
+counterintelligence (CI) investigations.
+-At any time, the USG may inspect and seize data stored on this IS.
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG authorized purpose.
+-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE, or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys,
+psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
+^C
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+!
+ntp source Ethernet0/3
+ntp server vrf mgmt 192.168.1.1
+ntp server vrf mgmt 192.168.0.2 prefer
+!
+end

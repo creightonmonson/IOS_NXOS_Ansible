@@ -16,19 +16,19 @@ ospf:
   process_id: 1
   networks:
     - interface: Ethernet1/1
-      area: 0
+      area: 0.0.0.0
     - interface: Ethernet1/2
-      area: 0
+      area: 0.0.0.0
     - interface: vlan100
-      area: 0
+      area: 0.0.0.0
     - interface: vlan101
-      area: 0
+      area: 0.0.0.0
     - interface: vlan102
-      area: 0
+      area: 0.0.0.0
     - interface: vlan103
-      area: 0
+      area: 0.0.0.0
     - interface: loopback0
-      area: 0
+      area: 0.0.0.0
 vpc:
   domain: 100
   pkl_vrf: management
@@ -38,6 +38,6 @@ vpc:
       - Ethernet1/3
       - Ethernet1/4
 trunks:
-  - port_channel_id: 11
-    members:
-      - Ethernet1/5
+  port_channel_id: 11
+  members:
+    - Ethernet1/5

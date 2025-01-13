@@ -7,16 +7,26 @@
     state: enabled
 
 
-- name: Configure Nexus L3  Interfaces
+- name: Configure Nexus L3 Physical Interfaces
   tags: interface
   loop: "{{ l3_interfaces }}"
+  when: item.mode is defined
   cisco.nxos.nxos_interfaces:
     config:
       - name: "{{ item.interface_type }}{{ item.interface_id }}"
         description: "{{ item.description }}"
-        mode: layer3
+        mode: "{{ item.mode }}"
+        enabled: true
 
-
+- name: Configure Nexus L3 Logical Interfaces
+  tags: interface
+  loop: "{{ l3_interfaces }}"
+  when: item.mode is not defined
+  cisco.nxos.nxos_interfaces:
+    config:
+      - name: "{{ item.interface_type }}{{ item.interface_id }}"
+        description: "{{ item.description }}"
+        enabled: true
 
 - name: Configure Nexus IP address on Routed Interfaces
   tags: interface  

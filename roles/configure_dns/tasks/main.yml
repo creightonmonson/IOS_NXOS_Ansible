@@ -1,0 +1,16 @@
+---
+- name: Configure Domain Name and DNS Server for IOS Devices
+  when: ansible_network_os == 'cisco.ios.ios'
+  cisco.ios.ios_system:
+    domain_name:
+      - "{{ domain_name }}"
+    name_servers:
+      - "{{ domain_dns_server }}"
+
+- name: Configure Domain Name and DNS Server for NXOS Devices
+  when: ansible_network_os == 'cisco.nxos.nxos'
+  cisco.nxos.nxos_system:
+    domain_name:
+      - "{{ domain_name }}"
+    name_servers:
+      - "{{ domain_dns_server }}"

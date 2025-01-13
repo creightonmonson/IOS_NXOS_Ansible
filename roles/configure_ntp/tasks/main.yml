@@ -1,0 +1,38 @@
+---
+- name: Configure Time Zone
+  when: ansible_network_os == 'cisco.ios.ios'
+  cisco.ios.ios_config:
+    lines:
+      - clock timezone EST -5 0
+
+- name: Configure NTP on IOS devices
+  when: ansible_network_os == 'cisco.ios.ios'
+  cisco.ios.ios_ntp_global:
+    config:
+      servers:
+        - server: "{{ ntp_server_1 }}"
+          vrf: "{{ ios_ntp_vrf }}"
+          prefer: true
+        - server: "{{ ntp_server_2 }}"
+          vrf: "{{ ios_ntp_vrf }}"
+      source: "{{ mgmt_interface }}"
+    state: merged
+
+- name: Configure Time Zone
+  when: ansible_network_os == 'cisco.nxos.nxos'
+  cisco.nxos.nxos_config:
+    lines:
+      - clock timezone EST -5 0
+
+- name: Configure NTP on NXOS devices
+  when: ansible_network_os == 'cisco.nxos.nxos'
+  cisco.nxos.nxos_ntp_global:
+    config:
+      servers:
+        - server: "{{ ntp_server_1 }}"
+          vrf: "{{ nxos_ntp_vrf }}"
+          prefer: true
+        - server: "{{ ntp_server_2 }}"
+          vrf: "{{ nxos_ntp_vrf }}"
+      source: "{{ mgmt_interface }}"
+    state: merged
