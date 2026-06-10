@@ -1,0 +1,10 @@
+---
+upgrade_pre_commands:
+  - show version
+  - show boot
+  - dir {{ ios_flash_filesystem }}
+
+upgrade_post_commands:
+  - show version
+  - show boot
+  - show install summary

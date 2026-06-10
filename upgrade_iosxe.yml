@@ -1,0 +1,24 @@
+---
+- name: Pre-upgrade configuration backup
+  hosts: iosxe
+  gather_facts: false
+  connection: network_cli
+  roles:
+    - backup_config
+
+- name: IOS-XE software upgrade
+  hosts: iosxe
+  gather_facts: false
+  connection: network_cli
+  serial: "{{ upgrade_serial | default(1) }}"
+  roles:
+    - upgrade_iosxe
+
+- name: Save upgraded IOS-XE configuration
+  hosts: iosxe
+  gather_facts: false
+  connection: network_cli
+  tasks:
+    - name: Save IOS Running Config to Startup Config
+      cisco.ios.ios_config:
+        save_when: modified

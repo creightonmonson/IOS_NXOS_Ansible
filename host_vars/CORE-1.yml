@@ -22,3 +22,4 @@ l3_interfaces:
     ip_address: 10.10.10.1
     prefix: 32
 mgmt_interface: Ethernet0/3
+ios_image_filename: cat9k_iosxe.17.12.04.SPA.bin

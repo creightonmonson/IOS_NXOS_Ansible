@@ -1,0 +1,132 @@
+---
+- name: Validate required upgrade variables are defined
+  ansible.builtin.assert:
+    that:
+      - ios_image_filename is defined
+      - ios_target_version is defined
+      - ios_flash_filesystem is defined
+    fail_msg: >-
+      Define ios_image_filename in host_vars and ios_target_version /
+      ios_flash_filesystem in group_vars/iosxe.yml.
+  tags:
+    - pre_upgrade
+
+- name: Gather IOS facts for pre-upgrade baseline
+  cisco.ios.ios_facts:
+  tags:
+    - pre_upgrade
+
+- name: Display current IOS-XE version
+  ansible.builtin.debug:
+    msg: >-
+      {{ inventory_hostname }} is running {{ ansible_net_version }}.
+      Target version is {{ ios_target_version }}.
+  tags:
+    - pre_upgrade
+
+- name: Run pre-upgrade verification commands
+  cisco.ios.ios_command:
+    commands: "{{ upgrade_pre_commands }}"
+  register: upgrade_pre_check
+  tags:
+    - pre_upgrade
+
+- name: Skip upgrade when device already meets target version
+  ansible.builtin.meta: end_host
+  when: ios_target_version in ansible_net_version
+  tags:
+    - pre_upgrade
+
+- name: Copy IOS-XE image from Ansible controller to device
+  ansible.netcommon.net_put:
+    src: "{{ ios_image_local_path }}/{{ ios_image_filename }}"
+    dest: "{{ ios_flash_filesystem }}{{ ios_image_filename }}"
+    protocol: scp
+  when: ios_image_transport == 'controller'
+  tags:
+    - copy_image
+
+- name: Copy IOS-XE image from remote file server to device
+  cisco.ios.ios_command:
+    commands:
+      - >-
+        copy {{ ios_image_transport_protocol }}://{{ ios_image_server }}/{{ ios_image_path | trim('/') }}/{{ ios_image_filename }}
+        {{ ios_flash_filesystem }} vrf {{ ios_upgrade_vrf }}
+    prompts:
+      - "Address or name of remote host"
+      - "Username"
+      - "Password"
+      - "Destination filename"
+      - "Do you want to over-write"
+    answers:
+      - "{{ ios_image_server }}"
+      - "{{ ios_image_server_user | default(ansible_user) }}"
+      - "{{ ios_image_server_password | default(ansible_password) }}"
+      - "{{ ios_image_filename }}"
+      - "y"
+  vars:
+    ansible_command_timeout: "{{ ios_copy_timeout }}"
+  when: ios_image_transport == 'remote_server'
+  tags:
+    - copy_image
+
+- name: Install IOS-XE image and activate
+  cisco.ios.ios_command:
+    commands:
+      - >-
+        install add file {{ ios_flash_filesystem }}{{ ios_image_filename }}
+        activate commit
+  vars:
+    ansible_command_timeout: "{{ ios_install_timeout }}"
+  tags:
+    - install
+
+- name: Reload IOS-XE device when install does not auto-reload
+  cisco.ios.ios_command:
+    commands:
+      - reload
+    prompts:
+      - "System configuration has been modified. Save"
+      - "Proceed with reload"
+    answers:
+      - "no"
+      - "confirm"
+  when: ios_upgrade_reload | bool
+  tags:
+    - reload
+
+- name: Wait for IOS-XE device to return after reload
+  ansible.builtin.wait_for:
+    host: "{{ ansible_host | default(inventory_hostname) }}"
+    port: 22
+    delay: "{{ ios_reload_delay }}"
+    timeout: "{{ ios_reload_timeout }}"
+    state: started
+  delegate_to: localhost
+  tags:
+    - reload
+    - post_upgrade
+
+- name: Gather IOS facts for post-upgrade verification
+  cisco.ios.ios_facts:
+  tags:
+    - post_upgrade
+
+- name: Run post-upgrade verification commands
+  cisco.ios.ios_command:
+    commands: "{{ upgrade_post_commands }}"
+  register: upgrade_post_check
+  tags:
+    - post_upgrade
+
+- name: Verify IOS-XE upgrade reached target version
+  ansible.builtin.assert:
+    that:
+      - ios_target_version in ansible_net_version
+    fail_msg: >-
+      {{ inventory_hostname }} reports version {{ ansible_net_version }},
+      which does not match target {{ ios_target_version }}.
+    success_msg: >-
+      {{ inventory_hostname }} successfully upgraded to {{ ansible_net_version }}.
+  tags:
+    - post_upgrade

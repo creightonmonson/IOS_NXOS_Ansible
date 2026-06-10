@@ -9,3 +9,4 @@ l3_interfaces:
     prefix: 32
     area: 0
 mgmt_interface: Ethernet0/3
+ios_image_filename: cat9k_iosxe.17.12.04.SPA.bin

@@ -5,3 +5,19 @@ ansible_password: 'cisco123'
 ansible_become: 'true'
 ansible_become_method: 'enable'
 ansible_network_os: 'cisco.ios.ios'
+
+# IOS-XE upgrade settings (used by upgrade_iosxe role)
+upgrade_serial: 1
+ios_upgrade_vrf: mgmt
+ios_flash_filesystem: flash:
+ios_target_version: "17.12.04"
+ios_image_transport: remote_server
+ios_image_transport_protocol: scp
+ios_image_server: 192.168.1.1
+ios_image_path: images/iosxe
+ios_image_local_path: ./images/iosxe
+ios_upgrade_reload: false
+ios_copy_timeout: 3600
+ios_install_timeout: 3600
+ios_reload_delay: 120
+ios_reload_timeout: 3600
